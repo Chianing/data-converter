@@ -1,5 +1,7 @@
 package com.chianing.plugin.dataconverter.ui;
 
+import com.chianing.plugin.dataconverter.util.CheckEmptyUtil;
+import com.chianing.plugin.dataconverter.util.JsonUtil;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -13,6 +15,8 @@ import java.awt.event.MouseEvent;
  */
 @Getter
 public class DataInputForm {
+    private final JFrame jFrame;
+
     private JPanel background;
     private JTextArea inputArea;
     private JButton cancelButton;
@@ -23,12 +27,55 @@ public class DataInputForm {
     private JPanel buttonArea;
     private JTextPane outputArea;
 
-    public DataInputForm() {
+    public DataInputForm(JFrame jFrame) {
+        this.jFrame = jFrame;
+
+        // json格式化
         jsonFormatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String text = inputArea.getText();
-                JOptionPane.showConfirmDialog(null, text);
+                String inputText = inputArea.getText();
+                if (CheckEmptyUtil.isEmpty(inputText)) {
+                    outputArea.setText("");
+                    return;
+                }
+
+                String outputText;
+                try {
+                    outputText = JsonUtil.prettifyJson(inputText);
+                } catch (Exception ex) {
+                    String errMsg = "parse error: " + ex.getMessage();
+                    JOptionPane.showMessageDialog(null, errMsg);
+                    outputText = "";
+                }
+
+                outputArea.setText(outputText);
+
+            }
+        });
+        // json压缩
+        jsonCompressButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String inputText = inputArea.getText();
+                if (CheckEmptyUtil.isEmpty(inputText)) {
+                    outputArea.setText("");
+                    return;
+                }
+
+                String outputText = inputText.replace(" ", "")
+                        .replace("\r", "")
+                        .replace("\n", "");
+
+                outputArea.setText(outputText);
+
+            }
+        });
+        // 关闭窗口
+        cancelButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                jFrame.dispose();
             }
         });
     }

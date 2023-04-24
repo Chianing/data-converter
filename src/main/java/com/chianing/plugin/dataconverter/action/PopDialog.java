@@ -11,7 +11,7 @@ public class PopDialog extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         JFrame frame = new JFrame("DataInputForm");
-        DataInputForm dataInputForm = new DataInputForm();
+        DataInputForm dataInputForm = new DataInputForm(frame);
         frame.setContentPane(dataInputForm.getBackground());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
