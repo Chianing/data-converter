@@ -45,3 +45,9 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly("org.projectlombok:lombok:1.18.26")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
+}

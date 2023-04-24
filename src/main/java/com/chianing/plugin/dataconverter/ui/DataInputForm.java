@@ -1,5 +1,7 @@
 package com.chianing.plugin.dataconverter.ui;
 
+import lombok.Getter;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,6 +11,7 @@ import java.awt.event.MouseEvent;
  * @description TODO
  * @date 2023/04/23 17:00
  */
+@Getter
 public class DataInputForm {
     private JPanel background;
     private JTextArea inputArea;
@@ -24,8 +27,10 @@ public class DataInputForm {
         jsonFormatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                String text = inputArea.getText();
+                JOptionPane.showConfirmDialog(null, text);
             }
         });
     }
+
 }
