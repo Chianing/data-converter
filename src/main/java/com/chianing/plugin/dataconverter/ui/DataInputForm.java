@@ -26,6 +26,9 @@ public class DataInputForm {
     private JPanel dataArea;
     private JPanel buttonArea;
     private JTextPane outputArea;
+    private JLabel inputNote;
+    private JPanel inputHeaderArea;
+    private JPanel outputHeaderArea;
 
     public DataInputForm(JFrame jFrame) {
         this.jFrame = jFrame;
