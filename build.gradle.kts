@@ -52,4 +52,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.26")
     // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.29")
+    // https://mvnrepository.com/artifact/com.alibaba/druid
+    implementation("com.alibaba:druid:1.2.17")
 }

@@ -1,5 +1,7 @@
 package com.chianing.plugin.dataconverter.ui;
 
+import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.visitor.VisitorFeature;
 import com.chianing.plugin.dataconverter.util.CheckEmptyUtil;
 import com.chianing.plugin.dataconverter.util.JsonUtil;
 import lombok.Getter;
@@ -18,6 +20,8 @@ import java.awt.event.MouseEvent;
  */
 @Getter
 public class DataInputForm {
+    private static final SQLUtils.FormatOption formatOption = new SQLUtils.FormatOption(VisitorFeature.OutputUCase, VisitorFeature.OutputPrettyFormat);
+
     private final JFrame jFrame;
 
     private JPanel background;
@@ -36,6 +40,8 @@ public class DataInputForm {
     private JButton cleanButton;
     private JScrollPane inputScroll;
     private JScrollPane outputScroll;
+    private JButton sqlFormatButton;
+    private JLabel outputNote;
 
     public DataInputForm(JFrame jFrame) {
         this.jFrame = jFrame;
@@ -71,7 +77,8 @@ public class DataInputForm {
                 try {
                     outputText = JsonUtil.prettifyJson(inputText);
                 } catch (Exception ex) {
-                    outputText = "parse error: " + ex.getMessage();
+                    outputText = ex.toString();
+                    ex.printStackTrace();
                 }
 
                 outputArea.setText(outputText);
@@ -88,7 +95,8 @@ public class DataInputForm {
                     return;
                 }
 
-                String outputText = inputText.replace(" ", "")
+                String outputText = inputText.trim()
+                        .replace(" ", "")
                         .replace("\r", "")
                         .replace("\n", "");
 
@@ -96,6 +104,47 @@ public class DataInputForm {
 
             }
         });
+        // sql压缩
+        sqlCompressButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String inputText = inputArea.getText();
+                if (CheckEmptyUtil.isEmpty(inputText)) {
+                    outputArea.setText("");
+                    return;
+                }
+
+                String outputText = inputText.trim()
+                        .replace("\r", " ")
+                        .replace("\n", " ")
+                        .replace("  ", " ");
+
+                outputArea.setText(outputText);
+
+            }
+        });
+        // sql格式化
+        // sqlFormatButton.addMouseListener(new MouseAdapter() {
+        //     @Override
+        //     public void mouseClicked(MouseEvent e) {
+        //         String inputText = inputArea.getText();
+        //         if (CheckEmptyUtil.isEmpty(inputText)) {
+        //             outputArea.setText("");
+        //             return;
+        //         }
+        //
+        //         String outputText;
+        //         try {
+        //             outputText = SQLUtils.formatPGSql(inputText, formatOption);
+        //         } catch (Exception ex) {
+        //             outputText = ex.toString();
+        //             ex.printStackTrace();
+        //         }
+        //
+        //         outputArea.setText(outputText);
+        //
+        //     }
+        // });
         // 关闭窗口
         cancelButton.addMouseListener(new MouseAdapter() {
             @Override

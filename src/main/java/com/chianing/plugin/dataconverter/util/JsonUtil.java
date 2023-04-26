@@ -1,5 +1,7 @@
 package com.chianing.plugin.dataconverter.util;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
 
@@ -34,11 +36,14 @@ public class JsonUtil {
             return null;
         }
 
-        if (pretty) {
-            return JSONObject.toJSONString(obj, JSONWriter.Feature.PrettyFormat);
+        if (obj instanceof JSONObject) {
+            return pretty ? JSONObject.toJSONString(obj, JSONWriter.Feature.PrettyFormat) : JSONObject.toJSONString(obj);
+        } else if (obj instanceof JSONArray) {
+            return pretty ? JSONArray.toJSONString(obj, JSONWriter.Feature.PrettyFormat) : JSONArray.toJSONString(obj);
         }
 
-        return JSONObject.toJSONString(obj);
+        return obj.toString();
+
     }
 
     /**
@@ -68,12 +73,9 @@ public class JsonUtil {
             return null;
         }
 
-        JSONObject jsonObj = JSONObject.parse(json);
-        if (CheckEmptyUtil.isEmpty(jsonObj)) {
-            return null;
-        }
+        Object parsedJson = JSON.parse(json);
 
-        return convertObj2Json(jsonObj, true);
+        return convertObj2Json(parsedJson, true);
     }
 
 }
