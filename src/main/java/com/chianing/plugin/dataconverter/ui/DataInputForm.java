@@ -5,6 +5,9 @@ import com.chianing.plugin.dataconverter.util.JsonUtil;
 import lombok.Getter;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -29,9 +32,30 @@ public class DataInputForm {
     private JLabel inputNote;
     private JPanel inputHeaderArea;
     private JPanel outputHeaderArea;
+    private JButton copyButton;
+    private JButton cleanButton;
+    private JScrollPane inputScroll;
+    private JScrollPane outputScroll;
 
     public DataInputForm(JFrame jFrame) {
         this.jFrame = jFrame;
+
+        // 清空输入框
+        cleanButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                inputArea.setText("");
+            }
+        });
+        // 复制输出框
+        copyButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                StringSelection outputText = new StringSelection(outputArea.getText());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(outputText, null);
+            }
+        });
 
         // json格式化
         jsonFormatButton.addMouseListener(new MouseAdapter() {
@@ -47,9 +71,7 @@ public class DataInputForm {
                 try {
                     outputText = JsonUtil.prettifyJson(inputText);
                 } catch (Exception ex) {
-                    String errMsg = "parse error: " + ex.getMessage();
-                    JOptionPane.showMessageDialog(null, errMsg);
-                    outputText = "";
+                    outputText = "parse error: " + ex.getMessage();
                 }
 
                 outputArea.setText(outputText);
