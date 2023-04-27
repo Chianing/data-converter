@@ -27,8 +27,8 @@
 
     </extensions>
     <actions>
-        <action id="popDialog" class="com.chianing.plugin.dataconverter.action.PopDialog" text="Pop Dialog"
-                description="Just pop dialog test">
+        <action id="convertDialog" class="com.chianing.plugin.dataconverter.action.ConvertDialog" text="Data Converter"
+                description="To convert data, such as Json, sql.">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>
